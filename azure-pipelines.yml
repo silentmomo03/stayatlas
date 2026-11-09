@@ -21,12 +21,35 @@ steps:
     displayName: Check JavaScript syntax
   - script: npm run test:ci
     displayName: Run HTTP, data and Azure-adapter tests
+  - pwsh: |
+      $reportPath = (Resolve-Path -LiteralPath 'reports/junit.xml').Path
+      [xml]$report = Get-Content -LiteralPath $reportPath -Raw
+      $root = $report.DocumentElement
+      $looseCases = @($root.SelectNodes('testcase'))
+      if ($looseCases.Count -gt 0) {
+          $suite = $report.CreateElement('testsuite')
+          $suite.SetAttribute('name', 'StayAtlas')
+          $suite.SetAttribute('tests', [string]$looseCases.Count)
+          foreach ($testCase in $looseCases) {
+              [void]$suite.AppendChild($testCase)
+          }
+          [void]$root.AppendChild($suite)
+          $report.Save($reportPath)
+      }
+      $publishableCases = $report.SelectNodes('/testsuites/testsuite/testcase').Count
+      if ($publishableCases -eq 0 -or $publishableCases -ne $report.SelectNodes('//testcase').Count) {
+          throw 'The JUnit report contains cases Azure DevOps cannot publish.'
+      }
+      Write-Host "JUnit report contains $publishableCases publishable test cases."
+    condition: succeededOrFailed()
+    displayName: Prepare JUnit report for Azure DevOps
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testResultsFormat: JUnit
       testResultsFiles: reports/junit.xml
       failTaskOnFailedTests: true
+      failTaskOnFailureToPublishResults: true
       failTaskOnMissingResultsFile: true
     displayName: Publish test evidence
   - script: npm run build
