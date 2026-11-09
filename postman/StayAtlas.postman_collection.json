@@ -1,0 +1,303 @@
+{
+  "info": {
+    "name": "StayAtlas local / Azure media CRUD",
+    "description": "Run against localhost first. Cloud URLs and write token are blank until deployed. The DELETE request removes only the record created by this collection. The historical catalogue is read-only.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:7074"
+    },
+    {
+      "key": "writeToken",
+      "value": ""
+    },
+    {
+      "key": "assetId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Filter historical listings",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/listings?guests=4&maxPrice=100&pageSize=5"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read nested reviews",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/listings/241032/reviews?q=quiet"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inspect the original PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/analyze",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fileName\": \"api-test-guide.pdf\",\n  \"contentType\": \"application/pdf\",\n  \"dataBase64\": \"JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA1OTUgODQyXSAvUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GMSA0IDAgUiA+PiA+PiAvQ29udGVudHMgNSAwIFIgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+CmVuZG9iago1IDAgb2JqCjw8IC9MZW5ndGggMTE0ID4+CnN0cmVhbQpCVCAvRjEgMjEgVGYgNTQgNzc4IFRkIChTdGF5QXRsYXMgQVBJIHRlc3QpIFRqIC9GMSAxMSBUZiAwIC0zNCBUZAooT3JpZ2luYWwgZGlzcG9zYWJsZSB0ZXN0IGd1aWRlLikgVGogMCAtMjIgVGQKRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyNDEgMDAwMDAgbiAKMDAwMDAwMDMxMSAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQ3NgolJUVPRgo=\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create a disposable guide",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/assets",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Postman original test guide\",\n  \"listingId\": \"241032\",\n  \"creatorName\": \"API tester\",\n  \"description\": \"Original disposable test guide.\",\n  \"tags\": [\n    \"api-test\"\n  ],\n  \"language\": \"en\",\n  \"rights\": \"original\",\n  \"upload\": {\n    \"fileName\": \"api-test-guide.pdf\",\n    \"contentType\": \"application/pdf\",\n    \"dataBase64\": \"JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA1OTUgODQyXSAvUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GMSA0IDAgUiA+PiA+PiAvQ29udGVudHMgNSAwIFIgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+CmVuZG9iago1IDAgb2JqCjw8IC9MZW5ndGggMTE0ID4+CnN0cmVhbQpCVCAvRjEgMjEgVGYgNTQgNzc4IFRkIChTdGF5QXRsYXMgQVBJIHRlc3QpIFRqIC9GMSAxMSBUZiAwIC0zNCBUZAooT3JpZ2luYWwgZGlzcG9zYWJsZSB0ZXN0IGd1aWRlLikgVGogMCAtMjIgVGQKRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyNDEgMDAwMDAgbiAKMDAwMDAwMDMxMSAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQ3NgolJUVPRgo=\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('assetId', pm.response.json().asset.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read its metadata",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/assets/{{assetId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Download actual file bytes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/assets/{{assetId}}/file"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update guide title",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/assets/{{assetId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Postman test guide\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete only the created test guide",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/assets/{{assetId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Confirm removal",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Write-Token",
+            "value": "{{writeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/assets/{{assetId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

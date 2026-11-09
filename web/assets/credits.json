@@ -1,0 +1,31 @@
+{
+  "license": "https://unsplash.com/license",
+  "accessed": "2026-10-19",
+  "disclosure": "Interior stock photos illustrate the interface and are not photos of source Airbnb listings. The Seattle city photo dates from 2018, after the dataset snapshot.",
+  "sources": [
+    {
+      "file": "room-1.jpg",
+      "id": "photo-1560185127-6ed189bf02f4",
+      "author": "Francesca Tosolini",
+      "page": "https://unsplash.com/photos/living-room-interior-6japTIjUQoI"
+    },
+    {
+      "file": "room-2.jpg",
+      "id": "photo-1560185009-5bf9f2849488",
+      "author": "Francesca Tosolini",
+      "page": "https://unsplash.com/photos/interior-of-a-living-room-XyGvEj587Mc"
+    },
+    {
+      "file": "room-3.jpg",
+      "id": "photo-1560448204-603b3fc33ddc",
+      "author": "Francesca Tosolini",
+      "page": "https://unsplash.com/photos/empty-living-room-KJFKCed0YKo"
+    },
+    {
+      "file": "seattle.jpg",
+      "id": "photo-1540321204207-b9a76c3a5829",
+      "author": "Erin Hervey",
+      "page": "https://unsplash.com/photos/seattle-skyline-f9hiPp38aDk"
+    }
+  ]
+}

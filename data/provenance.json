@@ -1,0 +1,57 @@
+{
+  "dataset": "Seattle Airbnb Open Data",
+  "source_url": "https://www.kaggle.com/datasets/airbnb/seattle",
+  "retrieved_on": "2026-10-15",
+  "archive_sha256": "31f45398717fa22d4d73bd2943723314ad891bc84cf6bcc4cd6f154578ad193d",
+  "source_listing_rows": 3818,
+  "source_review_rows": 84849,
+  "source_scrape_dates": [
+    "2016-01-04"
+  ],
+  "review_columns": [
+    "listing_id",
+    "id",
+    "date",
+    "reviewer_id",
+    "reviewer_name",
+    "comments"
+  ],
+  "retained_listing_fields": [
+    "source_listing_id",
+    "name",
+    "neighbourhood",
+    "room_type",
+    "accommodates",
+    "nightly_price_cents",
+    "currency"
+  ],
+  "subset_listings": 1000,
+  "subset_reviews": 13130,
+  "minimum_reviews_per_listing": 2,
+  "maximum_reviews_per_listing": 20,
+  "source_empty_comments_excluded": 17,
+  "selection": "First 1000 valid listings in source order with at least two nonempty reviews; first 20 distinct review IDs per listing in source order.",
+  "transformations": [
+    "Joined listing id with review listing_id and embedded review records under each listing.",
+    "Removed blank comments and duplicate review IDs; capped imported reviews at 20 per listing.",
+    "Converted source USD price strings to integer cents and validated ISO dates.",
+    "Retained source reviewer IDs separately from future application account IDs.",
+    "Did not import names of hosts/reviewers, exact addresses, image assets, or calendar data.",
+    "Source review records have written comments and dates but no individual star-rating field.",
+    "Dataset is a historical snapshot; the project does not claim current availability or live booking."
+  ],
+  "checks": {
+    "populated_parent_child_structure": true,
+    "unique_listing_ids": true,
+    "unique_review_ids": true,
+    "valid_prices_and_dates": true
+  },
+  "application": "StayAtlas",
+  "applicationPreparedAt": "2026-10-19",
+  "applicationNotes": [
+    "Historic research snapshot only. Prices and reviews do not describe current availability.",
+    "Reviewer IDs are removed from the application. Free text can still contain personal information.",
+    "No source property photos, exact addresses, calendars or individual review star ratings are imported.",
+    "Reference catalogue and historic reviews are read-only. New shared media has independent full CRUD."
+  ]
+}

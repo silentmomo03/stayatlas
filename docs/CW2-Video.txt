@@ -1,0 +1,67 @@
+StayAtlas CW2 — <=5 minute personal demonstration plan
+Status: script prepared. The student must record their own real demonstration.
+The Azure deployment passed 15 live checks. Capture the actual run and build
+evidence during recording.
+Do not show callback signatures, cloud keys, shared tokens or billing identifiers.
+
+00:00–00:25 — Personal introduction and purpose
+Camera if possible. Introduce name, student number and StayAtlas.
+Suggested cue:
+“I am [your name], student number [your student number]. StayAtlas lets visitors explore
+a historical Seattle listing catalogue and share photos and original PDF guides.
+The data snapshot is January 2016, so the prices are not current booking quotes.”
+
+00:25–00:50 — Audience, reference dataset and browsing
+Show the deployed website: https://stayatlasyxizclwt.z28.web.core.windows.net
+Filter by neighbourhood / room type / guests / historic budget. Open a listing,
+search one of its real comments and show the archive / illustrative-photo labels.
+“A compact index loads first, and the browser loads comments per listing to limit
+unnecessary mobile transfers. Favourites are stored in this browser.”
+
+00:50–02:00 — Actual media CRUD
+Select your own original PNG/JPEG or PDF, choose the related listing, title and
+rights. Run the file inspection and publish. Open actual preview and download.
+Edit the title or description and show the persisted change. Delete the exact
+demonstration media after confirming it is disposable, then show that it is gone.
+Do not delete another user's material for the recording.
+“Uploads are limited to three mebibytes. Each media entry stores a listing snapshot
+and file metadata. The reference listing and review dataset stays read-only.”
+
+02:00–03:10 — Real Azure resources and Logic Apps
+Show resource group stayatlas-coursework, static Storage hosting, private assets Blob and Cosmos
+DB for NoSQL database stayatlas / container assets with /id partition key.
+Show actual IUPS, RAI, RIPS, UIPS, DIPS and FIPS runs, operation URI paths (hide
+signatures), create's rollback branch and deletion run. Confirm the test object's
+Blob and Cosmos document were deleted. Explain orphan cleanup as a limitation.
+“All cloud media operations go through Logic Apps managed connectors. The Function
+delegates CRUD rather than writing directly to Blob or Cosmos.”
+
+03:10–03:45 — Two actual advanced integrations
+1. Show the deployed HTTP Function and a real inspection result containing actual
+file type, size / dimensions and SHA-256. Mention validation and hidden callbacks.
+2. On the deployed site translate a media description using the real Azure
+Translator resource. Show the original text remains beside the labelled result.
+Local disabled translation or mocked adapter tests are not live service proof.
+
+03:45–04:20 — Actual GitHub and Azure DevOps frontend build
+PENDING ACCOUNT / PIPELINE EVIDENCE.
+Show your actual GitHub repository connected to Azure DevOps. Open one successful
+Pipeline run, the Node 22 build steps, actual JUnit test results and static frontend
+artifact. A YAML file alone does not satisfy this demonstration.
+
+04:20–04:55 — Changes from CW1 and limitations
+“The CW1 core used static Storage, Blob, Cosmos DB and Logic Apps. CW2 adds the
+Function gateway for validation and the shared write token, plus Translator.
+The dataset remains a historic subset. We use last-write-wins editing and shared
+editorial access. Larger collections need cursor paging, identity and moderation.
+Blob and Cosmos operations are not a single atomic transaction.”
+Finish before 05:00. Check the recording length and that you are demonstrating
+your own deployed system and explaining the code you submit.
+
+Before recording
+- Current cloud URI: https://stayatlasyxizclwt.z28.web.core.windows.net
+- Successful live CRUD / deletion checks: passed in the live verification run.
+- Function and live Translator runs: passed in the live verification run.
+- Actual GitHub / DevOps successful run: [blank]
+- Student recorded video filename / duration: [blank]
+- Student camera / audio check: [blank]
